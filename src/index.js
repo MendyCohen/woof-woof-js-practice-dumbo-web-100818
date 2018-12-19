@@ -33,24 +33,42 @@ document.addEventListener('DOMContentLoaded', () => {
     if(e.target.tagName === 'SPAN'){
       allDogs.forEach(dog => {
         if(parseInt(e.target.id) === dog.id){
-          if(dog.isGoodDog){
-            dogContainer.innerHTML = `
-              <h2>${dog.name}</h2>
-              <img src="${dog.image}"><br>
-              <button id="${dog.id}">Good Dog!</button>
-            `
-          }
-          else {
-            dogContainer.innerHTML = `
-              <h2>${dog.name}</h2>
-              <img src="${dog.image}"><br>
-              <button id="${dog.id}">Bad Dog!</button>
-            `
-          }
+
+          fetch(`http://localhost:3000/pups/${e.target.id}`)
+           .then(res => res.json())
+           .then(pullingDogInfoFromApi)
+          //if(dog.isGoodDog){
+
+            // dogContainer.innerHTML = `
+            //   <h2>${dog.name}</h2>
+            //   <img src="${dog.image}"><br>
+            //   <button id="${dog.id}">${gbDog}</button>
+            // `
+
+          //}
+          // else {
+          //   dogContainer.innerHTML = `
+          //     <h2>${dog.name}</h2>
+          //     <img src="${dog.image}"><br>
+          //     <button id="${dog.id}">Bad Dog!</button>
+          //   `
+          // }
         }
       })
-      // debugger
     }
+  }
+
+  function pullingDogInfoFromApi(dogInfo){
+    if(dogInfo.isGoodDog){
+      var gbDog = 'Good Dog!'
+    } else {
+      var gbDog = 'Bad Dog!'
+    }
+    dogContainer.innerHTML = `
+      <h2>${dogInfo.name}</h2>
+      <img src="${dogInfo.image}"><br>
+      <button id="${dogInfo.id}">${gbDog}</button>
+    `
   }
 
   function togglingDog(e){
